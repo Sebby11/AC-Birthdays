@@ -1,3 +1,10 @@
+'''
+TODO:
+	- Get each row, pick out name & birthday, place data in dictionary:
+		{ date : [Name, Species, Gender, Personality, Birthday, Catchphrase] }
+
+'''
+
 import requests
 from bs4 import BeautifulSoup
 from datetime import date
@@ -32,9 +39,9 @@ def parse_bday(birthday):
 	bDayDict = {}
 	for link in bDayLinks:
 		if link not in bDayDict:
-			bDayDict[link.text] = [link['data-sort-value']]
+			bDayDict[link.text] = [link]
 		else:
-			bDayDict[link.text].append(link['data-sort-value'])
+			bDayDict[link.text].append(link)
 
 	# birthday: "2022-03-08", 1 = month, 2 = date
 	bvals = birthday.split("-")
@@ -53,8 +60,10 @@ def parse_bday(birthday):
 	# Get date similar to that from nookiepedia
 	date = ''
 	date = date.join([months[m], " ", v, "\n"])
+
+	# If there is a villager w/ the same birthday get the parent to parse data
 	if date in bDayDict:
-		print("IT IS: ", bDayDict[date])
+		print("Parent: ", bDayDict[date][0].parent)
 
 
 	print("---------------------------------------------------------------------------")
