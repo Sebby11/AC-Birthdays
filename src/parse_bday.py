@@ -11,12 +11,13 @@ from datetime import date
 
 
 def parse_bday(birthday):
-	months = {'1':'January', '2':'Febuary', '3':'March', '4':'April', 
+	months = {'1':'January', '2':'February', '3':'March', '4':'April', 
 			  '5':'May', '6':'June', '7':'July', '8':'August', 
 			  '9':'September', '10':'October', '11':'November', '12':'December'}
 	print("---------------------------------------------------------------------------")
 	url = 'https://nookipedia.com/wiki/Villagers/New_Horizons'
 
+	# Access URL
 	try:
 		page = requests.get(url)
 	except Exception as e:
@@ -25,9 +26,11 @@ def parse_bday(birthday):
 
 	soup = BeautifulSoup(page.text, "html.parser")
 
+	# Find all table tags
 	links = soup.find_all('td')
 	bDayLinks = []
 
+	# Get tags specifically relating to the birthday date
 	for link in links:
 		try:
 			if link['data-sort-value'] != None:
@@ -58,15 +61,33 @@ def parse_bday(birthday):
 			day = v
 	
 	# Get date similar to that from nookiepedia
-	date = ''
-	date = date.join([months[m], " ", v, "\n"])
+	date = ''.join([months[m], " ", day, "\n"])
 
 	# If there is a villager w/ the same birthday get the parent to parse data
+	parent = None
+	name = None
+	species = None
+	personality = None
+	print(date)
 	if date in bDayDict:
-		print("Parent: ", bDayDict[date][0].parent)
+		print("$$$$$$$$$$$$$$$$$$$$$$$$$$$ THERE EXISTS AN ENTRY $$$$$$$$$$$$$$$$$$$$$$$$$$$")
+		# Need to extract img srsset 2nd link
+		print(parent)
+		print()
+		parent = bDayDict[date][0].parent
+		imgLinks = parent.find('img')['srcset']
+		print(imgLinks)
+		imgLinks = imgLinks.split(',')
+		bigImg = imgLinks[1].split()[0]
+		
+		# Extract villager name/species/attitude
+		characteristics = parent.find_all('a')
+		name = characteristics[1].text
+		species = characteristics[2].text
+		personality = characteristics[3].text
+		print("Name: {}\nspecies: {}\nPersonality: {}".format(name,species,personality))
 
 
 	print("---------------------------------------------------------------------------")
-	bdata = 'hey'
-	message = {'data': bdata}
-	return message
+	data = {'name': name, 'species': species, 'personality': personality, 'img':bigImg}
+	return data

@@ -26,6 +26,12 @@ bdaySub.addEventListener('click', () => {
 
             response.json().then(function (birthday_data) {
                 console.log("DATA: ", birthday_data)
+                dataImg.src = birthday_data['img'];
+                dataTitle.innerText = "You and " + birthday_data['name'] + " the " + 
+                                            birthday_data['species'] + 
+                                            " have the same birthday!";
+                dataImg.hidden = false;
+                dataTitle.hidden = false
             });
 
         })
