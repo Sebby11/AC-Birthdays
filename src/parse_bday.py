@@ -70,13 +70,8 @@ def parse_bday(birthday):
 	personality = None
 	print(date)
 	if date in bDayDict:
-		print("$$$$$$$$$$$$$$$$$$$$$$$$$$$ THERE EXISTS AN ENTRY $$$$$$$$$$$$$$$$$$$$$$$$$$$")
-		# Need to extract img srsset 2nd link
-		print(parent)
-		print()
 		parent = bDayDict[date][0].parent
 		imgLinks = parent.find('img')['srcset']
-		print(imgLinks)
 		imgLinks = imgLinks.split(',')
 		bigImg = imgLinks[1].split()[0]
 		
@@ -85,8 +80,6 @@ def parse_bday(birthday):
 		name = characteristics[1].text
 		species = characteristics[2].text
 		personality = characteristics[3].text
-		print("Name: {}\nspecies: {}\nPersonality: {}".format(name,species,personality))
-
 
 	print("---------------------------------------------------------------------------")
 	data = {'name': name, 'species': species, 'personality': personality, 'img':bigImg}
